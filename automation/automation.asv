@@ -1,9 +1,7 @@
 
 Model = 'grid';
-CalibrationModel = 'calibration'
 run("params.m")
 open(Model);
-open(CalibrationModel);
 
 p_ref_i = 19;
 freq_i = 11;
@@ -18,7 +16,7 @@ open_time = 999;
 
 M2_backup = M2;
 M2 = M1;
-simOut = sim(CalibrationModel);
+simOut = sim(Model);
 
 P_ref = simOut.logsout{p_ref_i};
 freq = simOut.logsout{freq_i};
@@ -40,7 +38,7 @@ M2 = M2_backup;
 M1_backup = M1;
 M1 = M2;
 
-simOut = sim(CalibrationModel);
+simOut = sim(Model);
 
 P_ref = simOut.logsout{p_ref_i};
 freq = simOut.logsout{11};
@@ -57,9 +55,8 @@ necessaryGain = P_ref.Values.Data(end);
 M2.base_torque = M2.base_torque * necessaryGain/M2.P0_pu;
 
 
-%---------%
+
 % now to the real simulation
-%---------%
 M1 = M1_backup;
 
 clear M1_backup;
