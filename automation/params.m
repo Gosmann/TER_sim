@@ -67,7 +67,8 @@ ref_volt = 4160 ;     % V
 
 %%% Load
 
-
+close_time = 40;
+open_time = 80;
 
 Pn_L1 = M1.P0 + M2.P0; 
 Pn_L2 = Pn_L1;
