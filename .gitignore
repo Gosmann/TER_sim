@@ -1,2 +1,4 @@
 automation/slprj/*
 *.slxc
+*.mat
+*.mldatx
