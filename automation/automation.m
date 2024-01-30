@@ -21,7 +21,7 @@ simOut = sim(CalibrationModel);
 
 P_ref = simOut.logsout{p_ref_i};
 
-necessaryGain = P_ref.Values.Data(end)/M1.P0_pu;
+necessaryGain = P_ref.Values.Data(end)/M1.P0_pu
 M1.base_torque = M1.base_torque * necessaryGain;
 
 % Second pass
@@ -38,7 +38,7 @@ figure(2)
 plot(freq.Values.Time, freq.Values.Data, 'DisplayName', freq.Name);
 legend
 
-necessaryGain = P_ref.Values.Data(end)/M1.P0_pu;
+necessaryGain = P_ref.Values.Data(end)/M1.P0_pu
 M1.base_torque = M1.base_torque * necessaryGain;
 
 % Now doing the same for the second machine
@@ -50,7 +50,7 @@ simOut = sim(CalibrationModel);
 
 P_ref = simOut.logsout{p_ref_i};
 
-necessaryGain = P_ref.Values.Data(end)/M1.P0_pu;
+necessaryGain = P_ref.Values.Data(end)/M1.P0_pu
 M1.base_torque = M1.base_torque * necessaryGain;
 
 % Second pass
@@ -67,7 +67,7 @@ figure(2)
 plot(freq.Values.Time, freq.Values.Data, 'DisplayName', freq.Name);
 legend
 
-necessaryGain = P_ref.Values.Data(end)/M1.P0_pu;
+necessaryGain = P_ref.Values.Data(end)/M1.P0_pu
 M1.base_torque = M1.base_torque * necessaryGain;
 
 M2 = M1;

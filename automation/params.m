@@ -9,10 +9,10 @@ ref_volt = 4160 ;     % V
     M1.pole_pairs = 4;               
     M1.J = 30e3;
     M1.damping = 0.01;
-    M1.base_torque = 70.0931e3; 
+    M1.base_torque = 55e3; 
     % power
-    M1.Pn = 4e6;
-    M1.P0_pu = 0.1;
+    M1.Pn = 6e6;
+    M1.P0_pu = 0.5;
     M1.P0 = M1.Pn * M1.P0_pu;
 
     M1.droopP1 = 0.05;
@@ -40,10 +40,10 @@ ref_volt = 4160 ;     % V
     M2.pole_pairs = 4;               
     M2.J = 10e3;
     M2.damping = 0.015;
-    M2.base_torque = 40e3;
+    M2.base_torque = 30e3;
     % power
-    M2.Pn = 2e6;
-    M2.P0_pu = 0.1;
+    M2.Pn = 4e6;
+    M2.P0_pu = 0.5;
     M2.P0 = M2.Pn * M2.P0_pu;
 
     M2.droopP1 = 0.05;
@@ -71,7 +71,7 @@ close_time = 40;
 open_time = 80;
 
 Pn_L1 = M1.P0 + M2.P0; 
-Pn_L2 = Pn_L1;
+Pn_L2 = Pn_L1 * 0.2;
 
 %%% power division
 
