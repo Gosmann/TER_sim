@@ -70,5 +70,11 @@ classdef Results
         
         P2_3 {mustBeNumeric}
         P2_3_max {mustBeNumeric}
+
+        % parametres
+        P_machines {mustBeNumeric}
+        P_eol {mustBeNumeric}
+        P_PV {mustBeNumeric}
+        P_charge {mustBeNumeric}
    end
 end

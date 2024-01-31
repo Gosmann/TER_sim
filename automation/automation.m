@@ -211,8 +211,15 @@ resultArray(1).P1_3_max = P1_3_max;
 resultArray(1).P2_3 = P2_3;
 resultArray(1).P2_3_max = P2_3_max;
 
+% TODO %
+resultArray(1).P_machines = 0; 
+resultArray(1).P_eol = 0;
+resultArray(1).P_PV = 0;
+resultArray(1).P_charge = 0;
+
 plotSim(freq, P, P1, P2, tension, P_ref_1, P_ref_2);
 
+save("results.mat", "resultArray");
 msgbox("Done");
 
 
