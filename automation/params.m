@@ -15,7 +15,7 @@ ref_volt = 4160 ;     % V
     M1.P0_pu = 0.5;
     M1.P0 = M1.Pn * M1.P0_pu;
 
-    M1.droopP1 = 0.05;
+    M1.droopP1 = 0.03;
     % Voltage control
     M1.Kp_V = 100;
     M1.Ki_V = 10;

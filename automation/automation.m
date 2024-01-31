@@ -1,8 +1,9 @@
-
+run("params.m");
+run("Results.m");
+Simulink.sdi.clear;
 
 Model = 'grid';
 CalibrationModel = 'calibration'
-run("params.m")
 open(Model);
 open(CalibrationModel);
 
@@ -14,8 +15,11 @@ freq_i = 2;
 % to have only one machine is to set both machines to be identical. I could
 % have a secondary file only with a machine and a charge in an isolated
 % grid.
-Simulink.sdi.clear
 
+
+% The object where we save the Results
+numberOfSimulations = 121; % TODO
+resultArray(numberOfSimulations) = Results;
 "Machine 1"
                 
 % first pass
@@ -169,6 +173,44 @@ P1_3_max = max(P1_3_array);
 P2_3_array = P2.Values.Data(open_time/0.0002 - 500 + 2: end);
 P2_3 = P2_3_array(end);
 P2_3_max = max(P2_3_array);
+
+% SAVING THE RESULTS
+resultArray(1).freq_1 = freq_1;
+resultArray(1).freq_2 = freq_2;
+resultArray(1).freq_2_min = freq_2_min;
+resultArray(1).freq_3 = freq_3;
+resultArray(1).freq_3_max = freq_3_max;
+resultArray(1).tension_1 = tension_1;
+resultArray(1).tension_2 = tension_2;
+resultArray(1).tension_3 = tension_3;
+resultArray(1).P_ref_1_1 = P_ref_1_1;
+resultArray(1).P_ref_2_1 = P_ref_2_1;
+resultArray(1).P_ref_1_2 = P_ref_1_2;
+resultArray(1).P_ref_1_2_max = P_ref_1_2_max;
+resultArray(1).P_ref_2_2 = P_ref_2_2;
+resultArray(1).P_ref_2_2_max = P_ref_2_2_max;
+resultArray(1).P_ref_1_3 = P_ref_1_3;
+resultArray(1).P_ref_1_3_min = P_ref_1_3_min;
+resultArray(1).P_ref_2_3 = P_ref_2_3;
+resultArray(1).P_ref_2_3_min = P_ref_2_3_min;
+resultArray(1).P_1 = P_1;
+resultArray(1).P1_1 = P1_1;
+resultArray(1).P2_1 = P2_1;
+resultArray(1).P_2 = P_2;
+resultArray(1).P_2_min = P_2_min;
+resultArray(1).P_2_max = P_2_max;
+resultArray(1).P1_2 = P1_2;
+resultArray(1).P1_2_min = P1_2_min;
+resultArray(1).P1_2_max = P1_2_max;
+resultArray(1).P2_2 = P2_2;
+resultArray(1).P2_2_min = P2_2_min;
+resultArray(1).P2_2_max = P2_2_max;
+resultArray(1).P_3 = P_3;
+resultArray(1).P_3_max = P_3_max;
+resultArray(1).P1_3 = P1_3;
+resultArray(1).P1_3_max = P1_3_max;
+resultArray(1).P2_3 = P2_3;
+resultArray(1).P2_3_max = P2_3_max;
 
 plotSim(freq, P, P1, P2, tension, P_ref_1, P_ref_2);
 
