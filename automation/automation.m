@@ -1,5 +1,6 @@
 run("params.m");
 run("Results.m");
+run("wind_params.m");
 Simulink.sdi.clear;
 
 Model = 'grid';
@@ -77,7 +78,8 @@ M1 = M1_backup;
 %-------------------------------------------------------------------------%
 "Real simulation" %#ok<*NOPTS>
 
-clear necessaryGain;
+Pn_L1 = M1.P0 + M2.P0 + ; 
+Pn_L2 = Pn_L1 * 0.2;
 
 simOut = sim(Model);
 
