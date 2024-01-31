@@ -175,6 +175,7 @@ for ren_percent = 0:0.1:0.1
     resultArray(i).P_eol = P_eol;
     resultArray(i).P_PV = 0;
     resultArray(i).P_charge = Pn_L1;
+    resultArray(1).ren_percent = ren_percent;
     
     plotSim(freq, P, P1, P2, tension, P_ref_1, P_ref_2, ren_percent);
 end

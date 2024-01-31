@@ -76,5 +76,6 @@ classdef Results
         P_eol {mustBeNumeric}
         P_PV {mustBeNumeric}
         P_charge {mustBeNumeric}
+        ren_percent {mustBeNumeric}
    end
 end
