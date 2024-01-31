@@ -1,5 +1,6 @@
-P_nom = 1e6;		    % puissance nominale de la machine
-P_max = 4.9575e5 ;      % [W] max power at 10m/s
+P_eol = 1e6;		    % puissance nominale de la machine
+loss_factor = 0.98843573; % Measured on the output of the DC/AC converter
+P_eol_base = 4.957548e5 * loss_factor;      % [W] max power at 10m/s
 V_ref = ref_volt ;          % [V] line-line RMS reference voltage
 
 w_zero = 0 ;
@@ -81,7 +82,7 @@ k_mcc=9;
 w_mcc_nom = 1500*pi/30;
 
 w_init = w_mcc_nom/2;
-C_mcc_nom = P_nom/w_mcc_nom;
+C_mcc_nom = P_eol/w_mcc_nom;
 i_mcc_nom = C_mcc_nom/k_mcc;
 
  
@@ -94,11 +95,11 @@ H_mcc = 0.5;
 H_eol = 4;
 H_tot = H_mcc + H_eol;
 
-J_eol = 2*H_tot*P_nom/w_eol_nom^2;
+J_eol = 2*H_tot*P_eol/w_eol_nom^2;
 
 
  
-J_tot = 2*H_tot*P_nom/w_mcc_nom^2;
+J_tot = 2*H_tot*P_eol/w_mcc_nom^2;
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -119,11 +120,11 @@ end
 
 % On d?finit ensuite 2 points suppl?mentaires sur la caract?ristique de puissance de r?f?rence
 % 1? point : w_nom, P_nom
-P_opt_tab2(length_v+1) = P_nom;
+P_opt_tab2(length_v+1) = P_eol;
 omega_tab(length_v +1) = w_eol_nom;
 
 % 2? point : w_nom*2, P_nom
-P_opt_tab2(length_v+2) = P_nom;
+P_opt_tab2(length_v+2) = P_eol;
 omega_tab(length_v +2) = w_eol_nom*2;
 
 P_lim_opt =  1/2*ro_air*S_pal*cp_opt*(R_pal*w_eol_nom*0.95)^3/lambda_opt^3;

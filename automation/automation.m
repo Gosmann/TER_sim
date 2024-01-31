@@ -78,7 +78,7 @@ M1 = M1_backup;
 %-------------------------------------------------------------------------%
 "Real simulation" %#ok<*NOPTS>
 
-Pn_L1 = M1.P0 + M2.P0 + ; 
+Pn_L1 = M1.P0 + M2.P0 + P_eol; 
 Pn_L2 = Pn_L1 * 0.2;
 
 simOut = sim(Model);
