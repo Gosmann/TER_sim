@@ -20,8 +20,7 @@ freq_i = 2;
 % The object where we save the Results
 numberOfSimulations = 121; % TODO
 resultArray(numberOfSimulations) = Results;
-"Machine 1"
-                
+"Machine 1"                
 % first pass
 simOut = sim(CalibrationModel);
 
@@ -73,10 +72,10 @@ M1.base_torque = M1.base_torque * necessaryGain;
 M2 = M1;
 M1 = M1_backup;
 
-%---------%
-% now to the real simulation
-%---------%
-"Real simulation"
+%-------------------------------------------------------------------------%
+%- - - - - - - - - - - - now to the real simulation - - - - - - - - - - - %             
+%-------------------------------------------------------------------------%
+"Real simulation" %#ok<*NOPTS>
 
 clear necessaryGain;
 
