@@ -13,6 +13,7 @@ freq_i = 2;
 % to have only one machine is to set both machines to be identical. I could
 % have a secondary file only with a machine and a charge in an isolated
 % grid.
+Simulink.sdi.clear
 
 "Machine 1"
 
@@ -31,11 +32,15 @@ P_ref = simOut.logsout{p_ref_i};
 freq = simOut.logsout{freq_i};
 
 figure(1)
+set(gcf,'name','Calibration Machine 1');
+subplot(2,1,1);
 plot(P_ref.Values.Time, P_ref.Values.Data, 'DisplayName', P_ref.Name);
+title("Operating point");
 legend
 
-figure(2)
+subplot(2,1,2);
 plot(freq.Values.Time, freq.Values.Data, 'DisplayName', freq.Name);
+title("Measured frequency");
 legend
 
 necessaryGain = P_ref.Values.Data(end)/M1.P0_pu
@@ -59,12 +64,16 @@ simOut = sim(CalibrationModel);
 P_ref = simOut.logsout{p_ref_i};
 freq = simOut.logsout{freq_i};
 
-figure(1)
+figure(2)
+set(gcf,'name','Calibration Machine 2');
+subplot(2,1,1);
 plot(P_ref.Values.Time, P_ref.Values.Data, 'DisplayName', P_ref.Name);
+title("Operating point");
 legend
 
-figure(2)
+subplot(2,1,2);
 plot(freq.Values.Time, freq.Values.Data, 'DisplayName', freq.Name);
+title("Measured frequency");
 legend
 
 necessaryGain = P_ref.Values.Data(end)/M1.P0_pu
@@ -83,7 +92,7 @@ clear necessaryGain;
 simOut = sim(Model);
 
 % FREQUENCY
-freq = simOut.logsout{4};
+freq = simOut.logsout{3};
 % imediately before closing 
 freq_1 = freq.Values.Data(close_time/0.0002 - 500 );
 
@@ -112,8 +121,8 @@ tension_3 = tension_3_array(end);
 
 % P_ref_1 e 2
 % The control signal after the droop that sets the torque (pu)
-P_ref_1 = simOut.logsout{8};
-P_ref_2 = simOut.logsout{10};
+P_ref_1 = simOut.logsout{6};
+P_ref_2 = simOut.logsout{7};
 % imediately before closing 
 P_ref_1_1 = P_ref_1.Values.Data(close_time/0.0002 - 500 );
 P_ref_2_1 = P_ref_2.Values.Data(close_time/0.0002 - 500 );
@@ -121,25 +130,25 @@ P_ref_2_1 = P_ref_2.Values.Data(close_time/0.0002 - 500 );
 % after closing
 P_ref_1_2_array = P_ref_1.Values.Data(close_time/0.0002 - 500 + 2: open_time/0.0002 -500);
 P_ref_1_2 = P_ref_1_2_array(end);
-P_ref_1_2_min = min(P_ref_1_2_array);
+P_ref_1_2_max = max(P_ref_1_2_array);
 
 P_ref_2_2_array = P_ref_2.Values.Data(close_time/0.0002 - 500 + 2: open_time/0.0002 -500);
 P_ref_2_2 = P_ref_2_2_array(end);
-P_ref_2_2_min = min(P_ref_2_2_array);
+P_ref_2_2_max = max(P_ref_2_2_array);
 
 % after reopening
 P_ref_1_3_array = P_ref_1.Values.Data(open_time/0.0002 - 500 + 2: end);
 P_ref_1_3 = P_ref_1_3_array(end);
-P_ref_1_3_max = max(P_ref_1_3_array);
+P_ref_1_3_min = min(P_ref_1_3_array);
 
 P_ref_2_3_array = P_ref_2.Values.Data(open_time/0.0002 - 500 + 2: end);
 P_ref_2_3 = P_ref_2_3_array(end);
-P_ref_2_3_max = max(P_ref_2_3_array);
+P_ref_2_3_min = min(P_ref_2_3_array);
 
 % POWER
-P = simOut.logsout{3};
-P1 = simOut.logsout{5};
-P2 = simOut.logsout{6};
+P = simOut.logsout{2};
+P1 = simOut.logsout{4};
+P2 = simOut.logsout{5};
 % imediately before closing 
 P_1 = P.Values.Data(close_time/0.0002 - 500 );
 P1_1 = P1.Values.Data(close_time/0.0002 - 500 );
@@ -149,14 +158,17 @@ P2_1 = P2.Values.Data(close_time/0.0002 - 500 );
 P_2_array = P.Values.Data(close_time/0.0002 - 500 + 2: open_time/0.0002 -500);
 P_2 = P_2_array(end);
 P_2_min = min(P_2_array);
+P_2_max = max(P_2_array);
 
 P1_2_array = P1.Values.Data(close_time/0.0002 - 500 + 2: open_time/0.0002 -500);
 P1_2 = P1_2_array(end);
 P1_2_min = min(P1_2_array);
+P1_2_max = max(P1_2_array);
 
 P2_2_array = P2.Values.Data(close_time/0.0002 - 500 + 2: open_time/0.0002 -500);
 P2_2 = P2_2_array(end);
 P2_2_min = min(P2_2_array);
+P2_2_max = max(P2_2_array);
 
 % after reopening
 P_3_array = P.Values.Data(open_time/0.0002 - 500 + 2: end);
@@ -170,3 +182,36 @@ P1_3_max = max(P1_3_array);
 P2_3_array = P2.Values.Data(open_time/0.0002 - 500 + 2: end);
 P2_3 = P2_3_array(end);
 P2_3_max = max(P2_3_array);
+
+% Graphs for debugging the simulation
+
+figure(3)
+set(gcf,'name','Simulation');
+subplot(2,2,1);
+plot(freq.Values.Time, freq.Values.Data, 'DisplayName', freq.Name);
+title("Frequency (pu)");
+legend
+
+subplot(2,2,2);
+hold on
+plot(P.Values.Time, P.Values.Data, 'DisplayName', P.Name);
+plot(P1.Values.Time, P1.Values.Data, 'DisplayName', P1.Name);
+plot(P2.Values.Time, P2.Values.Data, 'DisplayName', P2.Name);
+title("Power measurements (W)");
+hold off
+legend
+
+subplot(2,2,3);
+plot(tension.Values.Time, tension.Values.Data, 'DisplayName', tension.Name);
+title("Tension measurements (pu)");
+legend
+
+subplot(2,2,4);
+hold on
+plot(P_ref_1.Values.Time, P_ref_1.Values.Data, 'DisplayName', P_ref_1.Name);
+plot(P_ref_2.Values.Time, P_ref_2.Values.Data, 'DisplayName', P_ref_2.Name);
+title("Power command (pu)");
+hold off
+legend
+
+msgbox("Done");
