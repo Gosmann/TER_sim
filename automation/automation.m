@@ -21,6 +21,19 @@ Simulink.sdi.clear
 simOut = sim(CalibrationModel);
 
 P_ref = simOut.logsout{p_ref_i};
+freq = simOut.logsout{freq_i};
+
+    figure(1)
+    set(gcf,'name','Calibration Machine 1');
+    subplot(2,1,1);
+    plot(P_ref.Values.Time, P_ref.Values.Data, 'DisplayName', P_ref.Name + "First");
+    title("Operating point");
+    legend
+    
+    subplot(2,1,2);
+    plot(freq.Values.Time, freq.Values.Data, 'DisplayName', freq.Name + "First");
+    title("Measured frequency");
+    legend
 
 necessaryGain = P_ref.Values.Data(end)/M1.P0_pu
 M1.base_torque = M1.base_torque * necessaryGain;
@@ -31,17 +44,18 @@ simOut = sim(CalibrationModel);
 P_ref = simOut.logsout{p_ref_i};
 freq = simOut.logsout{freq_i};
 
-figure(1)
-set(gcf,'name','Calibration Machine 1');
-subplot(2,1,1);
-plot(P_ref.Values.Time, P_ref.Values.Data, 'DisplayName', P_ref.Name);
-title("Operating point");
-legend
-
-subplot(2,1,2);
-plot(freq.Values.Time, freq.Values.Data, 'DisplayName', freq.Name);
-title("Measured frequency");
-legend
+    figure(1)
+    subplot(2,1,1);
+    hold on
+    plot(P_ref.Values.Time, P_ref.Values.Data, 'DisplayName', P_ref.Name + "Second");
+    hold off
+    legend
+    
+    subplot(2,1,2);
+    hold on
+    plot(freq.Values.Time, freq.Values.Data, 'DisplayName', freq.Name + "Second");
+    hold off
+    legend
 
 necessaryGain = P_ref.Values.Data(end)/M1.P0_pu
 M1.base_torque = M1.base_torque * necessaryGain;
@@ -54,6 +68,19 @@ M1 = M2;
 simOut = sim(CalibrationModel);
 
 P_ref = simOut.logsout{p_ref_i};
+freq = simOut.logsout{freq_i};
+
+    figure(2)
+    set(gcf,'name','Calibration Machine 2');
+    subplot(2,1,1);
+    plot(P_ref.Values.Time, P_ref.Values.Data, 'DisplayName', P_ref.Name + "First");
+    title("Operating point");
+    legend
+    
+    subplot(2,1,2);
+    plot(freq.Values.Time, freq.Values.Data, 'DisplayName', freq.Name + "First");
+    title("Measured frequency");
+    legend
 
 necessaryGain = P_ref.Values.Data(end)/M1.P0_pu
 M1.base_torque = M1.base_torque * necessaryGain;
@@ -64,17 +91,18 @@ simOut = sim(CalibrationModel);
 P_ref = simOut.logsout{p_ref_i};
 freq = simOut.logsout{freq_i};
 
-figure(2)
-set(gcf,'name','Calibration Machine 2');
-subplot(2,1,1);
-plot(P_ref.Values.Time, P_ref.Values.Data, 'DisplayName', P_ref.Name);
-title("Operating point");
-legend
-
-subplot(2,1,2);
-plot(freq.Values.Time, freq.Values.Data, 'DisplayName', freq.Name);
-title("Measured frequency");
-legend
+    figure(2)
+    subplot(2,1,1);
+    hold on
+    plot(P_ref.Values.Time, P_ref.Values.Data, 'DisplayName', P_ref.Name + "Second");
+    hold off
+    legend
+    
+    subplot(2,1,2);
+    hold on
+    plot(freq.Values.Time, freq.Values.Data, 'DisplayName', freq.Name + "Second");
+    hold off
+    legend
 
 necessaryGain = P_ref.Values.Data(end)/M1.P0_pu
 M1.base_torque = M1.base_torque * necessaryGain;
@@ -193,8 +221,8 @@ title("Frequency (pu)");
 legend
 
 subplot(2,2,2);
-hold on
 plot(P.Values.Time, P.Values.Data, 'DisplayName', P.Name);
+hold on
 plot(P1.Values.Time, P1.Values.Data, 'DisplayName', P1.Name);
 plot(P2.Values.Time, P2.Values.Data, 'DisplayName', P2.Name);
 title("Power measurements (W)");
@@ -207,8 +235,8 @@ title("Tension measurements (pu)");
 legend
 
 subplot(2,2,4);
-hold on
 plot(P_ref_1.Values.Time, P_ref_1.Values.Data, 'DisplayName', P_ref_1.Name);
+hold on
 plot(P_ref_2.Values.Time, P_ref_2.Values.Data, 'DisplayName', P_ref_2.Name);
 title("Power command (pu)");
 hold off
