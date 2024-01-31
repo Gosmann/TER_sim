@@ -214,4 +214,13 @@ title("Power command (pu)");
 hold off
 legend
 
+% backuping in a file
+figure(1);
+saveas(gcf, 'figures/calibration/1_M1.png');
+
+figure(2);
+saveas(gcf, 'figures/calibration/1_M2.png');
+
+figure(3);
+saveas(gcf, 'figures/simulation/1.png');
 msgbox("Done");
