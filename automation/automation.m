@@ -23,7 +23,7 @@ freq_i = 2;
 % have a secondary file only with a machine and a charge in an isolated
 % grid.
 
-calibration = 0;
+calibration = 1;
 if calibration == 1
     "Machine 1"                
     % first pass
@@ -99,7 +99,7 @@ for ren_percent = 0:0.1:0.4
         P_eol = P_ren - P_sol
     end
     Pn_L1 = M1.P0 + M2.P0 + P_ren; 
-    Pn_L2 = Pn_L1 * 0.2;
+    Pn_L2 = Pn_L1 * 0.01;
     
     simOut = sim(Model);
     

@@ -12,7 +12,7 @@ ref_volt = 4160 ;     % V
     M1.base_torque = 7.814998983685527e+04;%55e3; 
     % power
     M1.Pn = 6e6;
-    M1.P0_pu = 0.5;
+    M1.P0_pu = 0.7;
     M1.P0 = M1.Pn * M1.P0_pu;
 
     M1.droopP1 = 0.03;
@@ -43,7 +43,7 @@ ref_volt = 4160 ;     % V
     M2.base_torque = 5.261752319455191e+04;%30e3;
     % power
     M2.Pn = 4e6;
-    M2.P0_pu = 0.5;
+    M2.P0_pu = 0.8;
     M2.P0 = M2.Pn * M2.P0_pu;
 
     M2.droopP1 = 0.05;
