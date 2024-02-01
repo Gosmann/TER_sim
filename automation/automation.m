@@ -98,7 +98,7 @@ for ren_percent = 0:0.1:0.4
         P_sol = Power_per_pannel * round((0.5 * P_ren)/ Power_per_pannel)
         P_eol = P_ren - P_sol
     end
-    Pn_L1 = M1.P0 + M2.P0 + P_eol; 
+    Pn_L1 = M1.P0 + M2.P0 + P_ren; 
     Pn_L2 = Pn_L1 * 0.2;
     
     simOut = sim(Model);
