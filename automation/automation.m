@@ -85,11 +85,11 @@ end
 "Real simulation" %#ok<*NOPTS>
 i = 0;
 
-percantageArray = 00:10:80;
-delta_f_array = 0:0.1:0.8;
+percantageArray = 40:10:40;
+delta_f_array = 0.4:0.1:0.4;
 %TODO: encontrar os indices adequados, fazer isso depois de integrar os
 %paineis solares. 
-for ren_percent = 0:0.1:0.8
+for ren_percent = 0.4:0.1:0.4
     i = i + 1
     P_M = M1.P0 + M2.P0;
     if ren_percent == 0
@@ -98,10 +98,11 @@ for ren_percent = 0:0.1:0.8
         P_ren = P_sol;
     else 
         P_ren = P_M * ren_percent/ (1 - ren_percent);
-        P_sol = Power_per_pannel * round((0.6 * P_ren)/ Power_per_pannel);
-        P_eol = P_ren - P_sol;
+        P_sol = Power_per_pannel * round(P_ren/ Power_per_pannel);
+        P_eol = 0;%P_ren - P_sol;
     end
-    Pn_L1 = M1.P0 + M2.P0 + P_ren; 
+    Pn_L1 = M1.P0 + M2.P0 + P_sol; %P_ren; 
+    P_nom_bat = Pn_L1 * 0.20;
     Pn_L2 = Pn_L1 * 0.01;
     
     simOut = sim(Model);
