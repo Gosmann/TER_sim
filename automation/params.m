@@ -9,7 +9,7 @@ ref_volt = 4160 ;     % V
     M1.pole_pairs = 4;               
     M1.J = 30e3;
     M1.damping = 0.01;
-    M1.base_torque = 55e3; 
+    M1.base_torque = 7.814998983685527e+04;%55e3; 
     % power
     M1.Pn = 6e6;
     M1.P0_pu = 0.5;
@@ -40,7 +40,7 @@ ref_volt = 4160 ;     % V
     M2.pole_pairs = 4;               
     M2.J = 10e3;
     M2.damping = 0.015;
-    M2.base_torque = 30e3;
+    M2.base_torque = 5.261752319455191e+04;%30e3;
     % power
     M2.Pn = 4e6;
     M2.P0_pu = 0.5;

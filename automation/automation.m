@@ -1,12 +1,18 @@
+Simulink.sdi.clear;
+clear
 run("params.m");
 run("Results.m");
 run("wind_params.m");
-Simulink.sdi.clear;
+run("params_solar.m");
+
+% The object where we save the Results
+numberOfSimulations = 121; % TODO
+resultArray(numberOfSimulations) = Results;
 
 Model = 'grid';
 CalibrationModel = 'calibration'
 open(Model);
-open(CalibrationModel);
+
 
 p_ref_i = 3;
 freq_i = 2;
@@ -17,61 +23,61 @@ freq_i = 2;
 % have a secondary file only with a machine and a charge in an isolated
 % grid.
 
-
-% The object where we save the Results
-numberOfSimulations = 121; % TODO
-resultArray(numberOfSimulations) = Results;
-"Machine 1"                
-% first pass
-simOut = sim(CalibrationModel);
-
-P_ref = simOut.logsout{p_ref_i};
-freq = simOut.logsout{freq_i};
-
-plotM_1(P_ref, freq, 1);
-
-necessaryGain = P_ref.Values.Data(end)/M1.P0_pu
-M1.base_torque = M1.base_torque * necessaryGain;
-
-% Second pass
-simOut = sim(CalibrationModel);
-
-P_ref = simOut.logsout{p_ref_i};
-freq = simOut.logsout{freq_i};
-
-plotM_2(P_ref, freq, 1);
-
-necessaryGain = P_ref.Values.Data(end)/M1.P0_pu
-M1.base_torque = M1.base_torque * necessaryGain;
-
-% Now doing the same for the second machine
-"Machine 2"
-M1_backup = M1;
-M1 = M2;
-% first pass
-simOut = sim(CalibrationModel);
-
-P_ref = simOut.logsout{p_ref_i};
-freq = simOut.logsout{freq_i};
-
-plotM_1(P_ref, freq, 2);
-
-necessaryGain = P_ref.Values.Data(end)/M1.P0_pu
-M1.base_torque = M1.base_torque * necessaryGain;
-
-% Second pass
-simOut = sim(CalibrationModel);
-
-P_ref = simOut.logsout{p_ref_i};
-freq = simOut.logsout{freq_i};
-
-plotM_2(P_ref, freq, 2);
-
-necessaryGain = P_ref.Values.Data(end)/M1.P0_pu
-M1.base_torque = M1.base_torque * necessaryGain;
-
-M2 = M1;
-M1 = M1_backup;
+calibration = 0;
+if calibration == 1
+    "Machine 1"                
+    % first pass
+    open(CalibrationModel);
+    simOut = sim(CalibrationModel);
+    
+    P_ref = simOut.logsout{p_ref_i};
+    freq = simOut.logsout{freq_i};
+    
+    plotM_1(P_ref, freq, 1);
+    
+    necessaryGain = P_ref.Values.Data(end)/M1.P0_pu
+    M1.base_torque = M1.base_torque * necessaryGain;
+    
+    % Second pass
+    simOut = sim(CalibrationModel);
+    
+    P_ref = simOut.logsout{p_ref_i};
+    freq = simOut.logsout{freq_i};
+    
+    plotM_2(P_ref, freq, 1);
+    
+    necessaryGain = P_ref.Values.Data(end)/M1.P0_pu
+    M1.base_torque = M1.base_torque * necessaryGain;
+    
+    % Now doing the same for the second machine
+    "Machine 2"
+    M1_backup = M1;
+    M1 = M2;
+    % first pass
+    simOut = sim(CalibrationModel);
+    
+    P_ref = simOut.logsout{p_ref_i};
+    freq = simOut.logsout{freq_i};
+    
+    plotM_1(P_ref, freq, 2);
+    
+    necessaryGain = P_ref.Values.Data(end)/M1.P0_pu
+    M1.base_torque = M1.base_torque * necessaryGain;
+    
+    % Second pass
+    simOut = sim(CalibrationModel);
+    
+    P_ref = simOut.logsout{p_ref_i};
+    freq = simOut.logsout{freq_i};
+    
+    plotM_2(P_ref, freq, 2);
+    
+    necessaryGain = P_ref.Values.Data(end)/M1.P0_pu
+    M1.base_torque = M1.base_torque * necessaryGain;
+    
+    M2 = M1;
+    M1 = M1_backup;
+end
 
 %-------------------------------------------------------------------------%
 %- - - - - - - - - - - - now to the real simulation - - - - - - - - - - - %             
@@ -80,17 +86,23 @@ M1 = M1_backup;
 i = 0;
 %TODO: encontrar os indices adequados, fazer isso depois de integrar os
 %paineis solares. 
-for ren_percent = 0:0.1:0.1
+for ren_percent = 0.1:0.1:0.1
     i = i + 1
     P_M = M1.P0 + M2.P0;
-    P_eol = P_M * ren_percent/ (1 - ren_percent);
+    if ren_percent == 0
+        % TODO
+    else 
+        P_ren = P_M * ren_percent/ (1 - ren_percent);
+        P_sol = Power_per_pannel * round((0.5 * P_ren)/ Power_per_pannel)
+        P_eol = P_ren - P_sol
+    end
     Pn_L1 = M1.P0 + M2.P0 + P_eol; 
     Pn_L2 = Pn_L1 * 0.2;
     
     simOut = sim(Model);
     
     % FREQUENCY
-    freq = simOut.logsout{3};
+    freq = simOut.logsout{10};
     % after closing
     freq_2_array = freq.Values.Data(close_time/0.0002 - 500 + 2: open_time/0.0002 -500);
     % after reopening
