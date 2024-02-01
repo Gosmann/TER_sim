@@ -67,8 +67,8 @@ ref_volt = 4160 ;     % V
 
 %%% Load
 
-close_time = 20;
-open_time = 40;
+close_time = 10;
+open_time = 20;
 
 
 

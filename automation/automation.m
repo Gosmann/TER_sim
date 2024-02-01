@@ -86,11 +86,13 @@ end
 i = 0;
 %TODO: encontrar os indices adequados, fazer isso depois de integrar os
 %paineis solares. 
-for ren_percent = 0.1:0.1:0.1
+for ren_percent = 0:0.1:0.4
     i = i + 1
     P_M = M1.P0 + M2.P0;
     if ren_percent == 0
-        % TODO
+        P_sol = Power_per_pannel;
+        P_eol = 0;
+        P_ren = P_sol;
     else 
         P_ren = P_M * ren_percent/ (1 - ren_percent);
         P_sol = Power_per_pannel * round((0.5 * P_ren)/ Power_per_pannel)
@@ -101,95 +103,95 @@ for ren_percent = 0.1:0.1:0.1
     
     simOut = sim(Model);
     
-    % FREQUENCY
-    freq = simOut.logsout{10};
-    % after closing
-    freq_2_array = freq.Values.Data(close_time/0.0002 - 500 + 2: open_time/0.0002 -500);
-    % after reopening
-    freq_3_array = freq.Values.Data(open_time/0.0002 - 500 + 2: end);
-    
-    % VOLTAGE
-    tension = simOut.logsout{1};
-    
-    % P_ref_1 e 2
-    % The control signal after the droop that sets the torque (pu)
-    P_ref_1 = simOut.logsout{6};
-    P_ref_2 = simOut.logsout{7};
-    % after closing
-    P_ref_1_2_array = P_ref_1.Values.Data(close_time/0.0002 - 500 + 2: open_time/0.0002 -500);
-    P_ref_2_2_array = P_ref_2.Values.Data(close_time/0.0002 - 500 + 2: open_time/0.0002 -500);
-    % after reopening
-    P_ref_1_3_array = P_ref_1.Values.Data(open_time/0.0002 - 500 + 2: end);
-    P_ref_2_3_array = P_ref_2.Values.Data(open_time/0.0002 - 500 + 2: end);
-        
-    % POWER
-    P = simOut.logsout{2};
-    P1 = simOut.logsout{4};
-    P2 = simOut.logsout{5};
-    
-    % after closing
-    P_2_array = P.Values.Data(close_time/0.0002 - 500 + 2: open_time/0.0002 -500);    
-    P1_2_array = P1.Values.Data(close_time/0.0002 - 500 + 2: open_time/0.0002 -500);
-    P2_2_array = P2.Values.Data(close_time/0.0002 - 500 + 2: open_time/0.0002 -500);
-    
-        
-    % after reopening
-    P_3_array = P.Values.Data(open_time/0.0002 - 500 + 2: end);
-    P1_3_array = P1.Values.Data(open_time/0.0002 - 500 + 2: end);    
-    P2_3_array = P2.Values.Data(open_time/0.0002 - 500 + 2: end);
-    
-    
-    % SAVING THE RESULTS
-    resultArray(i).freq_1 = freq.Values.Data(close_time/0.0002 - 500 );
-    resultArray(i).freq_2 = freq_2_array(end);
-    resultArray(i).freq_3 = freq_3_array(end);
-
-    resultArray(i).freq_2_min = min(freq_2_array);
-    resultArray(i).freq_3_max = max(freq_3_array);
-
-    resultArray(i).tension_1 = tension.Values.Data(close_time/0.0002 - 500 );
-    resultArray(i).tension_2 = tension.Values.Data(open_time/0.0002 -500);
-    resultArray(i).tension_3 = tension.Values.Data(end);
-
-    resultArray(i).P_ref_1_1 = P_ref_1.Values.Data(close_time/0.0002 - 500 );
-    resultArray(i).P_ref_2_1 = P_ref_2.Values.Data(close_time/0.0002 - 500 );
-    resultArray(i).P_ref_1_2 = P_ref_1_2_array(end);
-    resultArray(i).P_ref_2_2 = P_ref_2_2_array(end);
-    resultArray(i).P_ref_1_3 = P_ref_1_3_array(end);
-    resultArray(i).P_ref_2_3 = P_ref_2_3_array(end);
-  
-    resultArray(i).P_ref_1_2_max = max(P_ref_1_2_array);
-    resultArray(i).P_ref_2_2_max = max(P_ref_2_2_array);
-    resultArray(i).P_ref_1_3_min = min(P_ref_1_3_array);
-    resultArray(i).P_ref_2_3_min = min(P_ref_2_3_array);
-
-    resultArray(i).P_1 = P.Values.Data(close_time/0.0002 - 500 );
-    resultArray(i).P1_1 = P1.Values.Data(close_time/0.0002 - 500 );
-    resultArray(i).P2_1 = P2.Values.Data(close_time/0.0002 - 500 );
-    resultArray(i).P_2 = P_2_array(end);
-    resultArray(i).P1_2 = P1_2_array(end);
-    resultArray(i).P2_2 = P2_2_array(end);
-    resultArray(i).P_3 = P_3_array(end);
-    resultArray(i).P1_3 = P1_3_array(end);
-    resultArray(i).P2_3 = P2_3_array(end);
-
-    resultArray(i).P_2_min = min(P_2_array);
-    resultArray(i).P_2_max = max(P_2_array);
-    resultArray(i).P1_2_min = min(P1_2_array);
-    resultArray(i).P1_2_max = max(P1_2_array);
-    resultArray(i).P2_2_min = min(P2_2_array);
-    resultArray(i).P2_2_max = max(P2_2_array);
-    resultArray(i).P_3_max = max(P_3_array);
-    resultArray(i).P1_3_max = max(P1_3_array);
-    resultArray(i).P2_3_max = max(P2_3_array);
-    
-    resultArray(i).P_machines = P_M; 
-    resultArray(i).P_eol = P_eol;
-    resultArray(i).P_PV = 0;
-    resultArray(i).P_charge = Pn_L1;
-    resultArray(1).ren_percent = ren_percent;
-    
-    plotSim(freq, P, P1, P2, tension, P_ref_1, P_ref_2, ren_percent);
+    % % FREQUENCY
+    % freq = simOut.logsout{10};
+    % % after closing
+    % freq_2_array = freq.Values.Data(close_time/0.0002 - 500 + 2: open_time/0.0002 -500);
+    % % after reopening
+    % freq_3_array = freq.Values.Data(open_time/0.0002 - 500 + 2: end);
+    % 
+    % % VOLTAGE
+    % tension = simOut.logsout{1};
+    % 
+    % % P_ref_1 e 2
+    % % The control signal after the droop that sets the torque (pu)
+    % P_ref_1 = simOut.logsout{6};
+    % P_ref_2 = simOut.logsout{7};
+    % % after closing
+    % P_ref_1_2_array = P_ref_1.Values.Data(close_time/0.0002 - 500 + 2: open_time/0.0002 -500);
+    % P_ref_2_2_array = P_ref_2.Values.Data(close_time/0.0002 - 500 + 2: open_time/0.0002 -500);
+    % % after reopening
+    % P_ref_1_3_array = P_ref_1.Values.Data(open_time/0.0002 - 500 + 2: end);
+    % P_ref_2_3_array = P_ref_2.Values.Data(open_time/0.0002 - 500 + 2: end);
+    % 
+    % % POWER
+    % P = simOut.logsout{2};
+    % P1 = simOut.logsout{4};
+    % P2 = simOut.logsout{5};
+    % 
+    % % after closing
+    % P_2_array = P.Values.Data(close_time/0.0002 - 500 + 2: open_time/0.0002 -500);    
+    % P1_2_array = P1.Values.Data(close_time/0.0002 - 500 + 2: open_time/0.0002 -500);
+    % P2_2_array = P2.Values.Data(close_time/0.0002 - 500 + 2: open_time/0.0002 -500);
+    % 
+    % 
+    % % after reopening
+    % P_3_array = P.Values.Data(open_time/0.0002 - 500 + 2: end);
+    % P1_3_array = P1.Values.Data(open_time/0.0002 - 500 + 2: end);    
+    % P2_3_array = P2.Values.Data(open_time/0.0002 - 500 + 2: end);
+    % 
+    % 
+    % % SAVING THE RESULTS
+    % resultArray(i).freq_1 = freq.Values.Data(close_time/0.0002 - 500 );
+    % resultArray(i).freq_2 = freq_2_array(end);
+    % resultArray(i).freq_3 = freq_3_array(end);
+    % 
+    % resultArray(i).freq_2_min = min(freq_2_array);
+    % resultArray(i).freq_3_max = max(freq_3_array);
+    % 
+    % resultArray(i).tension_1 = tension.Values.Data(close_time/0.0002 - 500 );
+    % resultArray(i).tension_2 = tension.Values.Data(open_time/0.0002 -500);
+    % resultArray(i).tension_3 = tension.Values.Data(end);
+    % 
+    % resultArray(i).P_ref_1_1 = P_ref_1.Values.Data(close_time/0.0002 - 500 );
+    % resultArray(i).P_ref_2_1 = P_ref_2.Values.Data(close_time/0.0002 - 500 );
+    % resultArray(i).P_ref_1_2 = P_ref_1_2_array(end);
+    % resultArray(i).P_ref_2_2 = P_ref_2_2_array(end);
+    % resultArray(i).P_ref_1_3 = P_ref_1_3_array(end);
+    % resultArray(i).P_ref_2_3 = P_ref_2_3_array(end);
+    % 
+    % resultArray(i).P_ref_1_2_max = max(P_ref_1_2_array);
+    % resultArray(i).P_ref_2_2_max = max(P_ref_2_2_array);
+    % resultArray(i).P_ref_1_3_min = min(P_ref_1_3_array);
+    % resultArray(i).P_ref_2_3_min = min(P_ref_2_3_array);
+    % 
+    % resultArray(i).P_1 = P.Values.Data(close_time/0.0002 - 500 );
+    % resultArray(i).P1_1 = P1.Values.Data(close_time/0.0002 - 500 );
+    % resultArray(i).P2_1 = P2.Values.Data(close_time/0.0002 - 500 );
+    % resultArray(i).P_2 = P_2_array(end);
+    % resultArray(i).P1_2 = P1_2_array(end);
+    % resultArray(i).P2_2 = P2_2_array(end);
+    % resultArray(i).P_3 = P_3_array(end);
+    % resultArray(i).P1_3 = P1_3_array(end);
+    % resultArray(i).P2_3 = P2_3_array(end);
+    % 
+    % resultArray(i).P_2_min = min(P_2_array);
+    % resultArray(i).P_2_max = max(P_2_array);
+    % resultArray(i).P1_2_min = min(P1_2_array);
+    % resultArray(i).P1_2_max = max(P1_2_array);
+    % resultArray(i).P2_2_min = min(P2_2_array);
+    % resultArray(i).P2_2_max = max(P2_2_array);
+    % resultArray(i).P_3_max = max(P_3_array);
+    % resultArray(i).P1_3_max = max(P1_3_array);
+    % resultArray(i).P2_3_max = max(P2_3_array);
+    % 
+    % resultArray(i).P_machines = P_M; 
+    % resultArray(i).P_eol = P_eol;
+    % resultArray(i).P_PV = 0;
+    % resultArray(i).P_charge = Pn_L1;
+    % resultArray(1).ren_percent = ren_percent;
+    % 
+    % plotSim(freq, P, P1, P2, tension, P_ref_1, P_ref_2, ren_percent);
 end
 
 save("results.mat", "resultArray");
