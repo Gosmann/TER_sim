@@ -85,7 +85,7 @@ end
 "Real simulation" %#ok<*NOPTS>
 i = 0;
 
-percantageArray = 0:0.1:0.3 ;
+percantageArray = 0:10:30;
 delta_f_array = 0:0.1:0.3;
 %TODO: encontrar os indices adequados, fazer isso depois de integrar os
 %paineis solares. 
@@ -133,8 +133,10 @@ end
 
 figure(5)
 set(gcf,'name','Frequency deviation');
-plot(percantageArray, delta_f_array, 'DisplayName', "delta_f");
+plot(percantageArray, delta_f_array, 'DisplayName', "delta_f", "LineWidth",3);
 title("Frequency deviation in terms of the renewable percentage (pu)");
+xlabel("Percentage of intermittent power sources [%]");
+ylabel("Maximum frequency deviation [pu]")
 legend
 
 msgbox("Done");
@@ -176,7 +178,8 @@ function plotSim(freq, P1_pu_array, P2_pu_array, P, P1, P2, tension, r, P_sol_ar
     plot(freq.Values.Time, freq.Values.Data, 'DisplayName', freq.Name, 'LineWidth', 3);
     xlim([10 40])
     xlabel('t [s]')
-    title("Frequency (pu)");
+    ylabel("Instantenous frequency [pu]")
+    title("Frequency [pu]");
     legend
     
     subplot(2,2,2);
@@ -189,34 +192,38 @@ function plotSim(freq, P1_pu_array, P2_pu_array, P, P1, P2, tension, r, P_sol_ar
     title("Power measurements (W)");
     xlim([10 40])
     xlabel('t [s]')
+    ylabel('Power [W]')
     hold off
     legend
     
     subplot(2,2,3);
     plot(tension.Values.Time, tension.Values.Data, 'DisplayName', tension.Name, 'LineWidth', 3);
-    title("Tension measurements (pu)");
+    title("Voltage measurements (pu)");
     xlim([10 40])
     xlabel('t [s]')
+    ylabel('Voltage [pu]')
     legend
     
     subplot(2,2,4);
     plot(P1_pu_array.Values.Time, P1_pu_array.Values.Data, 'DisplayName', P1_pu_array.Name, 'LineWidth', 3);
     hold on
     plot(P2_pu_array.Values.Time, P2_pu_array.Values.Data, 'DisplayName', P2_pu_array.Name, 'LineWidth', 3);
-    title("Power command and measures (pu)");
+    title("Synchronous machines' power [pu]");
     xlim([10 40])
     xlabel('t [s]')
+    ylabel('Power [pu]')
     hold off
     legend
     
     %superposition of frequency graphs
     figure(4)
     set(gcf,'name','Frequency supeposition');
-    plot(freq.Values.Time, freq.Values.Data, 'DisplayName', freq.Name + " (" + string(r) + ")", 'LineWidth', 3);
+    plot(freq.Values.Time, freq.Values.Data, 'DisplayName', freq.Name + " (" + string(r*100) + "%)", 'LineWidth', 3);
     hold on
-    title("Instant frequency for different intermittent percentages (pu)");
+    title("Instant frequency for different intermittent percentages [pu]");
     xlim([10 40])
     xlabel('t [s]')
+    ylabel('Frequency [pu]')
     legend
 
     % backuping in a file
