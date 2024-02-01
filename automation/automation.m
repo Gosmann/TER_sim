@@ -131,6 +131,8 @@ for ren_percent = 0:0.1:0.3
     P = simOut.logsout{2};
     P1 = simOut.logsout{7};
     P2 = simOut.logsout{8};
+    P_sol_array = simOut.logsout{5};
+    P_eol_array = simOut.logsout{9};
 
     % after closing
     P_2_array = P.Values.Data(close_time/0.0002 - 500 + 2: open_time/0.0002 -500);    
@@ -198,7 +200,7 @@ for ren_percent = 0:0.1:0.3
     resultArray(i).P_charge = Pn_L1;
     resultArray(1).ren_percent = ren_percent;
 
-    plotSim(freq, P, P1, P2, tension, P_ref_1, P_ref_2, ren_percent);
+    plotSim(freq, P, P1, P2, tension, P_ref_1, P_ref_2, ren_percent, P_sol_array, P_eol_array);
 end
 
 figure(5)
@@ -239,9 +241,8 @@ function plotM_2(P_ref, freq, machine)
     legend
 end
 
-function plotSim(freq, P, P1, P2, tension, P_ref_1, P_ref_2, r)
+function plotSim(freq, P, P1, P2, tension, P_ref_1, P_ref_2, r, P_sol_array, P_eol_array)
     % Graphs for debugging the simulation
-    stable_time = 5;
     figure(3)
     set(gcf,'name','Simulation');
     subplot(2,2,1);
@@ -251,10 +252,12 @@ function plotSim(freq, P, P1, P2, tension, P_ref_1, P_ref_2, r)
     legend
     
     subplot(2,2,2);
-    plot(P.Values.Time(stable_time/0.0002 - 500:end), P.Values.Data(stable_time/0.0002 - 500:end), 'DisplayName', P.Name);
+    plot(P.Values.Time, P.Values.Data, 'DisplayName', P.Name);
     hold on
-    plot(P1.Values.Time(stable_time/0.0002 - 500:end), P1.Values.Data(stable_time/0.0002 - 500:end), 'DisplayName', P1.Name);
-    plot(P2.Values.Time(stable_time/0.0002 - 500:end), P2.Values.Data(stable_time/0.0002 - 500:end), 'DisplayName', P2.Name);
+    plot(P1.Values.Time, P1.Values.Data, 'DisplayName', P1.Name);
+    plot(P2.Values.Time, P2.Values.Data, 'DisplayName', P2.Name);
+    plot(P_sol_array.Values.Time, P_sol_array.Values.Data, 'DisplayName', P_sol_array.Name);
+    plot(P_eol_array.Values.Time, P_eol_array.Values.Data, 'DisplayName', P_eol_array.Name);
     title("Power measurements (W)");
     xlim([10 40])
     hold off
